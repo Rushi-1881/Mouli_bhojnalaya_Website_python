@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5" data-aos="zoom-in">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            
+            <div class="card border-0 shadow-lg" style="background: #fff; border-radius: 10px; border-top: 15px solid #dc3545 !important;">
+                <div class="card-body p-5">
+                    
+                    <div class="text-center mb-4 border-bottom pb-3">
+                        <h3 class="fw-bold text-danger mb-0">Bhojnalaya Mauli</h3>
+                        <p class="small text-muted mb-0">Beside Janvi Bar, Tahsil Road, Arni</p>
+                        <p class="small text-muted mb-0">Phone: +91 9356401434</p>
+                        <p class="small text-muted mt-2 fw-bold border border-1 d-inline-block px-3 py-1 rounded-pill">TAX INVOICE</p>
+                    </div>
+
+                    <div class="row mb-4 small fw-bold text-dark">
+                        <div class="col-6">
+                            <p class="mb-1">Order No: #{{ order.id }}</p>
+                            <p class="mb-0">Date: {{ order.order_date.strftime('%d-%m-%Y') }}</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <p class="mb-1">Name: {{ order.customer_name }}</p>
+                            <p class="mb-0">Type: Store Pickup</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-light p-3 rounded-3 mb-4">
+                        <h6 class="fw-bold border-bottom pb-2 mb-3 text-secondary">ITEMS ORDERED</h6>
+                        <pre class="mb-0" style="font-family: inherit; font-size: 0.9rem; white-space: pre-wrap; color: #333; font-weight: 500;">{{ order.order_details }}</pre>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center border-top border-bottom py-3 mb-4">
+                        <h5 class="fw-bold mb-0 text-dark">GRAND TOTAL</h5>
+                        <h4 class="fw-bold text-danger mb-0">₹{{ order.total_amount }}</h4>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="fw-bold text-success mb-1"><i class="fas fa-check-circle"></i> Payment: Pay at Store</p>
+                        <p class="small text-muted fst-italic">Thank you for ordering! Visit again.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{{ url_for('order_history') }}" class="btn btn-outline-dark rounded-pill shadow-sm"><i class="fas fa-arrow-left"></i> Back to History</a>
+                <button onclick="window.print()" class="btn btn-danger rounded-pill shadow-sm px-4"><i class="fas fa-download"></i> Print / Save PDF</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    @media print {
+        body * { visibility: hidden; }
+        .card, .card * { visibility: visible; }
+        .card { position: absolute; left: 0; top: 0; width: 100%; border-top: none !important; box-shadow: none !important;}
+        .glass-nav-right, footer, .btn { display: none !important; }
+    }
+</style>
+{% endblock %}

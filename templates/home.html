@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .feedback-bubble {
+        position: fixed;
+        bottom: -50px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #f5af19;
+        color: #333;
+        padding: 10px 20px;
+        border-radius: 50px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        font-size: 0.9rem;
+        font-weight: bold;
+        z-index: 1000;
+        opacity: 0;
+        animation: floatUp 6s ease-in-out forwards;
+        pointer-events: none;
+    }
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(0.8); opacity: 0; }
+        10% { opacity: 1; transform: translateY(-50px) scale(1.05); }
+        80% { opacity: 1; transform: translateY(-300px) scale(1); }
+        100% { opacity: 0; transform: translateY(-400px) scale(0.9); }
+    }
+
+    #specialPopup {
+        position: fixed; 
+        bottom: 20px; 
+        left: 20px; 
+        width: 300px; 
+        z-index: 1050; 
+        display: none; 
+        transform: translateY(150%); 
+        transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+</style>
+
+<div class="container-fluid bg-gradient-premium py-5" style="min-height: 90vh; display: flex; align-items: center; overflow: hidden;">
+    <div class="container position-relative">
+        <div class="row align-items-center">
+            
+            <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0" style="z-index: 2;" data-aos="fade-right" data-aos-duration="1200">
+                <span class="badge bg-white text-danger mb-3 px-3 py-2 rounded-pill fs-6 shadow-sm">
+                    <i class="fas fa-leaf text-success"></i> 100% Pure Veg
+                </span>
+                
+                <h1 class="display-3 fw-bolder mb-3" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.2);">
+                    Welcome to<br>Bhojnalaya Mauli
+                </h1>
+                
+                <div class="mb-4 d-inline-block px-4 py-2 rounded-pill shadow-sm" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <i class="fas fa-map-marker-alt text-warning fs-5 align-middle me-2"></i> 
+                    <span class="fw-bold" style="color: rgba(255,255,255,0.95);">Mauli Bhojnalaya, Beside Janvi Bar, Arni, Dist Yavatmal - 445103</span>
+                </div>
+
+                <p class="lead fw-light mb-5 fs-4" style="color: rgba(255,255,255,0.9);">
+                    A taste of home with Vithumauli's blessings. Taste the authentic flavors made with pure love and fresh spices.
+                </p>
+                <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
+                    <a href="{{ url_for('menu') }}" class="btn btn-light btn-lg text-danger fw-bold rounded-pill px-5 py-3 shadow-lg">
+                        <i class="fas fa-utensils me-2"></i> Order Menu
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-center hero-image-container" data-aos="fade-up" data-aos-duration="1500">
+                <div class="glow-ring"></div> 
+                <div class="aesthetic-circle circle-1"></div>
+                <div class="aesthetic-circle circle-2"></div>
+                <img src="{{ url_for('static', filename='vittal.jpg') }}" alt="Vithumauli" class="img-fluid floating-god rounded-4 shadow-lg">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container my-5 py-4">
+    <div class="row g-4 text-center">
+        <div class="col-md-6" data-aos="fade-right">
+            <div class="card premium-card h-100 p-4 d-flex flex-column align-items-center justify-content-center">
+                <div class="icon-circle mb-3 shadow-sm" style="background: rgba(245, 175, 25, 0.15); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-store fa-2x" style="color: #f5af19;"></i>
+                </div>
+                <h4 class="fw-bold">Only Store Pickup</h4>
+                <p class="text-muted mb-0">We do not offer home delivery. Please visit our store to pick up your hot and freshly prepared meals.</p>
+            </div>
+        </div>
+        <div class="col-md-6" data-aos="fade-left">
+            <div class="card premium-card h-100 p-4 d-flex flex-column align-items-center justify-content-center">
+                <div class="icon-circle mb-3 shadow-sm" style="background: rgba(241, 39, 17, 0.15); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-calendar-check fa-2x" style="color: #f12711;"></i>
+                </div>
+                <h4 class="fw-bold">Bulk Orders</h4>
+                <p class="text-muted mb-0">We accept bulk orders for weddings, birthdays, and parties. Contact us on WhatsApp for special rates.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5 py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="display-5 fw-bold text-gradient">Our Special Delights</h2>
+        <p class="text-muted fs-5">Handpicked premium dishes from our menu</p>
+    </div>
+    
+    <div class="row g-4">
+        {% for item in featured %}
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+            <div class="card premium-card h-100 pb-2">
+                <img src="{{ url_for('static', filename=item.image_url) }}" class="card-img-top" alt="{{ item.name }}" style="height: 220px; object-fit: cover;">
+                
+                <div class="card-body position-relative px-4">
+                    <div class="position-absolute top-0 end-0 translate-middle-y bg-white p-3 rounded-circle shadow" style="margin-right: 20px;">
+                        <i class="fas fa-crown icon-premium"></i>
+                    </div>
+                    <span class="badge bg-warning text-dark mb-2 mt-2 px-3 py-1 rounded-pill">{{ item.category }}</span>
+                    <h4 class="fw-bold mb-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Veg_symbol.svg/1200px-Veg_symbol.svg.png" width="15" class="me-1"> 
+                        {{ item.name }}
+                    </h4>
+                    <p class="text-muted">{{ item.description }}</p>
+                    
+                    <form action="{{ url_for('add_to_cart', item_id=item.id) }}" method="POST" class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top m-0">
+                        <span class="fs-4 fw-bold text-danger mb-0">₹{{ item.price }}</span>
+                        
+                        <div class="input-group shadow-sm" style="width: 130px; border-radius: 50px; overflow: hidden;">
+                            <input type="number" name="quantity" class="form-control text-center border-danger" value="1" min="1" max="50" style="font-weight: bold; padding-left: 10px;">
+                            <button type="submit" class="btn btn-danger px-3">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-5" data-aos="fade-up">
+        <a href="{{ url_for('menu') }}" class="btn btn-outline-danger btn-lg rounded-pill px-5 shadow-sm">View Full Menu <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
+</div>
+
+<div class="container my-5 py-5" data-aos="fade-up" style="background-color: #fdfbf7; border-radius: 20px;">
+    <h2 class="text-center fw-bold mb-5 text-gradient">How It Works?</h2>
+    <div class="row g-4 text-center px-lg-5">
+        
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="p-4 bg-white rounded-4 shadow-sm border-0 h-100 position-relative">
+                <div class="badge bg-danger rounded-circle position-absolute top-0 start-50 translate-middle p-3 shadow-lg" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                    <span class="fs-5 fw-bold">1</span>
+                </div>
+                <i class="fas fa-utensils fa-3x text-danger mt-4 mb-3"></i>
+                <h5 class="fw-bold">Select Your Food</h5>
+                <p class="text-muted small mb-0">Browse our pure veg menu, select your favorite dishes, and add them to your cart.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="p-4 bg-white rounded-4 shadow-sm border-0 h-100 position-relative">
+                <div class="badge bg-warning text-dark rounded-circle position-absolute top-0 start-50 translate-middle p-3 shadow-lg" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                    <span class="fs-5 fw-bold">2</span>
+                </div>
+                <i class="fab fa-whatsapp fa-3x text-warning mt-4 mb-3"></i>
+                <h5 class="fw-bold">Send via WhatsApp</h5>
+                <p class="text-muted small mb-0">Review your order and securely send it directly to our store's WhatsApp number.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="p-4 bg-white rounded-4 shadow-sm border-0 h-100 position-relative">
+                <div class="badge bg-success rounded-circle position-absolute top-0 start-50 translate-middle p-3 shadow-lg" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                    <span class="fs-5 fw-bold">3</span>
+                </div>
+                <i class="fas fa-shopping-bag fa-3x text-success mt-4 mb-3"></i>
+                <h5 class="fw-bold">Pick Up & Enjoy</h5>
+                <p class="text-muted small mb-0">Visit our store in Arni, pay via Cash/UPI, and take your hot, freshly packed food home!</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="container-fluid py-5" style="background-color: #fff9f5;">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5 text-gradient" data-aos="fade-up">Words of Love</h2>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="p-4 review-card shadow-sm h-100 bg-white">
+                    <div class="text-warning mb-3 fs-5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="fst-italic text-secondary">"Absolutely delicious food! The Zunka Bhakar is the best I've ever had."</p>
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">R</div>
+                        <h6 class="fw-bold mb-0">Rahul S.</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="p-4 review-card shadow-sm h-100 bg-white">
+                    <div class="text-warning mb-3 fs-5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    <p class="fst-italic text-secondary">"Both quality and packaging are premium. The food is always served hot at the store."</p>
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">P</div>
+                        <h6 class="fw-bold mb-0">Priya K.</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="p-4 review-card shadow-sm h-100 bg-white">
+                    <div class="text-warning mb-3 fs-5"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="fst-italic text-secondary">"Authentic Puran Poli. Simply the best pure veg food in Arni!"</p>
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">A</div>
+                        <h6 class="fw-bold mb-0">Amit M.</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="specialPopup" class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-gradient-premium text-white border-0 d-flex justify-content-between align-items-center rounded-top-4 py-2">
+        <span class="fw-bold"><i class="fas fa-fire text-warning me-1"></i> Today's Special</span>
+        <button type="button" class="btn-close btn-close-white" onclick="closePopup()" style="font-size: 0.7rem;"></button>
+    </div>
+    <div class="card-body text-center p-3">
+        <img src="{{ url_for('static', filename='images/puran_poli.jpg') }}" onerror="this.src='https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80'" alt="Special" class="img-fluid rounded-3 mb-2 shadow-sm" style="height: 120px; object-fit: cover; width: 100%;">
+        <h6 class="fw-bold mb-1">Authentic Puran Poli</h6>
+        <p class="text-muted small mb-3">Served with hot, pure Ghee. Available today only!</p>
+        <a href="{{ url_for('menu') }}" class="btn btn-sm btn-danger rounded-pill w-100 shadow-sm fw-bold">Order Now</a>
+    </div>
+</div>
+
+<script>
+    // --- Floating Review Bubbles Logic ---
+    const reviews = [
+        "⭐⭐⭐⭐⭐ Best Zunka Bhakar in Arni!",
+        "⭐⭐⭐⭐⭐ Fast Pickup, hot food!",
+        "⭐⭐⭐⭐ Amazing Puran Poli.",
+        "⭐⭐⭐⭐⭐ Premium Quality!",
+        "⭐⭐⭐⭐⭐ Pure Veg & hygienic."
+    ];
+    
+    function createBubble() {
+        const bubble = document.createElement('div');
+        bubble.classList.add('feedback-bubble');
+        bubble.innerText = reviews[Math.floor(Math.random() * reviews.length)];
+        // Randomly position bubble between 10% and 70% width of the screen so it doesn't clip
+        bubble.style.left = Math.floor(Math.random() * 60 + 10) + 'vw';
+        document.body.appendChild(bubble);
+        // Remove bubble from memory after animation finishes
+        setTimeout(() => { bubble.remove(); }, 6000);
+    }
+    
+    // Start showing bubbles every 4 seconds
+    setInterval(createBubble, 4000);
+
+    // --- Today's Special Popup Logic ---
+    setTimeout(() => {
+        const popup = document.getElementById('specialPopup');
+        popup.style.display = 'block';
+        // Slight delay allows CSS transition to trigger smoothly
+        setTimeout(() => { popup.style.transform = 'translateY(0)'; }, 50);
+    }, 2000); // Pops up 2 seconds after page loads
+
+    function closePopup() {
+        const popup = document.getElementById('specialPopup');
+        popup.style.transform = 'translateY(150%)';
+        setTimeout(() => { popup.style.display = 'none'; }, 600); // Hide completely after sliding down
+    }
+</script>
+{% endblock %}

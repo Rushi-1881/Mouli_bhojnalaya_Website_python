@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+<div class="container my-5" data-aos="fade-up">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card premium-card shadow-lg border-0 rounded-4 overflow-hidden">
+                
+                <div class="card-header text-white text-center py-4 bg-gradient-premium">
+                    <h3 class="mb-0 fw-bold"><i class="fas fa-store"></i> Store Pickup Checkout</h3>
+                </div>
+                
+                <div class="card-body p-5">
+                    
+                    <div class="text-center mb-4 pb-3 border-bottom">
+                        <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_tll0j4bb.json" background="transparent" speed="1" style="width: 150px; height: 150px; margin: 0 auto;" loop autoplay></lottie-player>
+                        
+                        <h4 class="fw-bold text-danger mt-2">Pick Your Order From The Store</h4>
+                        <p class="text-muted mb-0">Home delivery is not available. Please visit Bhojnalaya Mauli to collect your freshly prepared food.</p>
+                    </div>
+
+                    <form action="{{ url_for('checkout') }}" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fas fa-user text-muted"></i></span>
+                                <input type="text" name="name" class="form-control form-control-lg bg-light border-start-0" required placeholder="e.g. Rahul Sharma">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Phone Number (WhatsApp Active)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fas fa-phone-alt text-muted"></i></span>
+                                <input type="tel" name="phone" class="form-control form-control-lg bg-light border-start-0" required placeholder="e.g. 9876543210">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Expected Pickup Time / Any Notes</label>
+                            <textarea name="address" class="form-control form-control-lg bg-light" rows="2" required placeholder="e.g. I will pick up my order in 30 minutes."></textarea>
+                        </div>
+                        
+                        <div class="alert alert-warning text-center rounded-3 shadow-sm border-warning">
+                            <i class="fas fa-wallet fs-5 align-middle me-2"></i> Payment Method: <strong>Pay at Store (Cash/UPI)</strong>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success btn-lg w-100 fw-bold rounded-pill shadow mt-3 position-relative overflow-hidden" style="transition: all 0.3s;">
+                            <i class="fab fa-whatsapp fs-4 align-middle me-2"></i> Confirm & Send via WhatsApp
+                        </button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
